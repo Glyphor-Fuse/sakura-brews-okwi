@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KISSATEN | Tokyo Roastery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;600&family=Space+Grotesk:wght@300;500&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #121212;
+            --color-paper: #F2F0E9;
+            --color-accent: #CFA78A;
+            --color-text-dark: #1A1A1A;
+            --color-text-light: #F2F0E9;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text-light);
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Syne', sans-serif;
+        }
+
+        .jp-font {
+            font-family: 'Noto Serif JP', serif;
+        }
+
+        .vertical-text {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+        }
+
+        /* Image treatments */
+        .img-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(18,18,18,0.3), rgba(18,18,18,0.8));
+        }
+
+        .grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            z-index: 9999;
+        }
+
+        .reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+        
+        .menu-item-line {
+            flex-grow: 1;
+            border-bottom: 1px dashed rgba(26,26,26, 0.2);
+            margin: 0 1rem;
+            transform: translateY(-4px);
+        }
+
+        .hover-reveal-img {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="grain"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-start mix-blend-difference text-[#F2F0E9]">
+        <div class="flex flex-col leading-none">
+            <span class="text-xs tracking-[0.2em] uppercase mb-1 opacity-70">Tokyo, Japan</span>
+            <span class="font-bold text-2xl tracking-tighter">KISSATEN</span>
+        </div>
+        <div class="hidden md:flex gap-12 text-xs uppercase tracking-[0.1em]">
+            <a href="#" class="hover:line-through decoration-1 decoration-white/50">Menu</a>
+            <a href="#" class="hover:line-through decoration-1 decoration-white/50">Roasts</a>
+            <a href="#" class="hover:line-through decoration-1 decoration-white/50">Atelier</a>
+        </div>
+        <div class="md:hidden">
+            <!-- Minimal Hamburger -->
+            <div class="space-y-1.5 cursor-pointer">
+                <div class="w-8 h-0.5 bg-[#F2F0E9]"></div>
+                <div class="w-6 h-0.5 bg-[#F2F0E9] ml-auto"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative w-full h-screen flex items-center justify-center overflow-hidden">
+        <!-- Hero Background -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1542617415-e5ff54c55d0a?q=80&w=2565&auto=format&fit=crop" 
+                 alt="Dark Urban Tokyo" 
+                 class="w-full h-full object-cover grayscale opacity-60 scale-110 hero-img">
+            <div class="img-overlay"></div>
+        </div>
+
+        <!-- Vertical JP Text (Left) -->
+        <div class="absolute left-6 md:left-12 top-1/2 -translate-y-1/2 z-10 hidden md:block">
+            <h2 class="jp-font vertical-text text-6xl text-white/10 select-none font-thin">
+                喫茶店 ・ 東京
+            </h2>
+        </div>
+
+        <!-- Main Content -->
+        <div class="relative z-20 text-center flex flex-col items-center max-w-5xl mx-auto px-4">
+            <span class="text-[#CFA78A] text-xs md:text-sm tracking-[0.4em] uppercase mb-6 hero-sub">
+                Est. 2024 — Shibuya District
+            </span>
+            <h1 class="text-7xl md:text-9xl font-bold tracking-tighter leading-[0.85] mb-8 hero-title">
+                CONCRETE<br>
+                <span class="font-thin italic font-serif">&
+                </span> ESPRESSO
+            </h1>
+            <p class="max-w-md text-white/60 text-sm md:text-base leading-relaxed hero-desc">
+                A brutalist sanctuary for the modern coffee purist. Where industrial precision meets organic chaos in the heart of Tokyo.
+            </p>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
+            <span class="text-[10px] tracking-widest uppercase">Explore</span>
+            <div class="w-[1px] h-12 bg-white/30"></div>
+        </div>
+    </header>
+
+    <!-- Philosophy Section -->
+    <section class="relative w-full py-32 bg-[#F2F0E9] text-[#1A1A1A] overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-[#E8E6DE] -z-0 hidden md:block"></div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-end">
+                <div class="md:col-span-7">
+                    <h2 class="text-5xl md:text-8xl font-extrabold uppercase tracking-tight leading-none mb-12 trigger-text">
+                        The Art of<br> extraction
+                    </h2>
+                    <div class="flex gap-8">
+                        <div class="w-12 h-[1px] bg-black mt-3"></div>
+                        <p class="max-w-md text-lg leading-relaxed trigger-text">
+                            We treat coffee not as a routine, but as a ritual. Our beans are roasted in small batches within our concrete walls, filling the industrial void with the warmth of distinct, complex aromas.
+                        </p>
+                    </div>
+                </div>
+                <div class="md:col-span-5">
+                    <div class="relative aspect-[4/5] overflow-hidden group">
+                        <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=2671&auto=format&fit=crop" 
+                             alt="Pour over coffee" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur px-4 py-2">
+                            <span class="text-xs uppercase tracking-widest font-bold">Process 01</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="relative w-full py-32 bg-[#F2F0E9] text-[#1A1A1A]">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <div class="flex items-baseline justify-between mb-20 border-b border-black/10 pb-6">
+                <h2 class="text-4xl md:text-6xl font-bold uppercase tracking-tight">Beverage<br>Manifest</h2>
+                <span class="jp-font text-2xl opacity-40">メニュー</span>
+            </div>
+
+            <!-- Category: Espresso -->
+            <div class="mb-16 menu-category">
+                <div class="flex items-center gap-4 mb-8">
+                    <span class="w-3 h-3 bg-[#1A1A1A]"></span>
+                    <h3 class="text-xl font-bold uppercase tracking-widest">Black / Espresso</h3>
+                </div>
+                
+                <div class="space-y-6">
+                    <!-- Item 1 -->
+                    <div class="group cursor-pointer">
+                        <div class="flex items-baseline justify-between">
+                            <span class="text-lg font-medium group-hover:translate-x-2 transition-transform duration-300">Double Espresso</span>
+                            <div class="menu-item-line"></div>
+                            <span class="font-mono opacity-60">¥500</span>
+                        </div>
+                        <p class="text-xs text-black/50 mt-1 ml-0 group-hover:translate-x-2 transition-transform duration-300 delay-75">House Blend / Single Origin (+¥100)</p>
+                    </div>
+                    <!-- Item 2 -->
+                    <div class="group cursor-pointer">
+                        <div class="flex items-baseline justify-between">
+                            <span class="text-lg font-medium group-hover:translate-x-2 transition-transform duration-300">Long Black</span>
+                            <div class="menu-item-line"></div>
+                            <span class="font-mono opacity-60">¥600</span>
+                        </div>
+                        <p class="text-xs text-black/50 mt-1 ml-0 group-hover:translate-x-2 transition-transform duration-300 delay-75">Double shot over hot water</p>
+                    </div>
+                     <!-- Item 3 -->
+                     <div class="group cursor-pointer">
+                        <div class="flex items-baseline justify-between">
+                            <span class="text-lg font-medium group-hover:translate-x-2 transition-transform duration-300">Cold Brew</span>
+                            <div class="menu-item-line"></div>
+                            <span class="font-mono opacity-60">¥700</span>
+                        </div>
+                        <p class="text-xs text-black/50 mt-1 ml-0 group-hover:translate-x-2 transition-transform duration-300 delay-75">Kyoto-style slow drip (24hr)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category: White -->
+            <div class="mb-16 menu-category">
+                <div class="flex items-center gap-4 mb-8">
+                    <span class="w-3 h-3 border border-[#1A1A1A]"></span>
+                    <h3 class="text-xl font-bold uppercase tracking-widest">White / Milk</h3>
+                </div>
+                
+                <div class="space-y-6">
+                    <!-- Item -->
+                    <div class="group cursor-pointer">
+                        <div class="flex items-baseline justify-between">
+                            <span class="text-lg font-medium group-hover:translate-x-2 transition-transform duration-300">Flat White</span>
+                            <div class="menu-item-line"></div>
+                            <span class="font-mono opacity-60">¥650</span>
+                        </div>
+                        <p class="text-xs text-black/50 mt-1 ml-0 group-hover:translate-x-2 transition-transform duration-300 delay-75">Velvet micro-foam, double ristretto</p>
+                    </div>
+                    <!-- Item -->
+                    <div class="group cursor-pointer">
+                        <div class="flex items-baseline justify-between">
+                            <span class="text-lg font-medium group-hover:translate-x-2 transition-transform duration-300">Oat Latte</span>
+                            <div class="menu-item-line"></div>
+                            <span class="font-mono opacity-60">¥750</span>
+                        </div>
+                        <p class="text-xs text-black/50 mt-1 ml-0 group-hover:translate-x-2 transition-transform duration-300 delay-75">Organic oat milk, nutty profile</p>
+                    </div>
+                    <!-- Item -->
+                    <div class="group cursor-pointer">
+                        <div class="flex items-baseline justify-between">
+                            <span class="text-lg font-medium group-hover:translate-x-2 transition-transform duration-300">Dirty Matcha</span>
+                            <div class="menu-item-line"></div>
+                            <span class="font-mono opacity-60">¥800</span>
+                        </div>
+                        <p class="text-xs text-black/50 mt-1 ml-0 group-hover:translate-x-2 transition-transform duration-300 delay-75">Uji matcha, espresso shot, milk</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Image Interlude -->
+    <section class="w-full h-[60vh] relative overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1550953831-2921509372fb?q=80&w=2670&auto=format&fit=crop" 
+             alt="Industrial Interior" 
+             class="w-full h-full object-cover grayscale parallax-img">
+        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+             <h2 class="text-white text-4xl md:text-6xl font-serif italic text-center">
+                 "Silence is the ingredient." 
+             </h2>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#121212] text-[#F2F0E9] py-20 px-6 border-t border-white/10">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="md:col-span-2">
+                <h2 class="text-4xl font-bold tracking-tighter mb-6">KISSATEN</h2>
+                <p class="text-white/50 max-w-xs leading-relaxed">
+                    A coffee roastery and design study inspired by the brutalist architecture of 1970s Tokyo.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-xs uppercase tracking-widest text-[#CFA78A] mb-6">Visit</h4>
+                <address class="not-italic text-sm text-white/70 space-y-2">
+                    <p>12-4 Udagawacho,</p>
+                    <p>Shibuya City,</p>
+                    <p>Tokyo 150-0042</p>
+                </address>
+            </div>
+            <div>
+                <h4 class="text-xs uppercase tracking-widest text-[#CFA78A] mb-6">Connect</h4>
+                <ul class="text-sm text-white/70 space-y-2">
+                    <li><a href="#" class="hover:text-white transition-colors">Instagram</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Line</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Email</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="mt-20 pt-8 border-t border-white/5 flex justify-between items-center text-xs text-white/30 uppercase tracking-wider">
+            <p>&copy; 2026 Kissaten Roastery</p>
+            <p class="jp-font">設計</p>
+        </div>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero Animations
+        const tl = gsap.timeline();
+        
+        tl.from(".hero-title", {
+            y: 100,
+            opacity: 0,
+            duration: 1.5,
+            ease: "power4.out"
+        })
+        .from(".hero-sub", {
+            y: 20,
+            opacity: 0,
+            duration: 1,
+            ease: "power2.out"
+        }, "-=1")
+        .from(".hero-desc", {
+            y: 20,
+            opacity: 0,
+            duration: 1,
+            ease: "power2.out"
+        }, "-=0.8")
+        .from(".vertical-text", {
+            x: -50,
+            opacity: 0,
+            duration: 1.5,
+            ease: "power2.out"
+        }, "-=1.5");
+
+        // Parallax Effect on Hero Image
+        gsap.to(".hero-img", {
+            scrollTrigger: {
+                trigger: "header",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            },
+            y: 100
+        });
+
+        // Philosophy Section Text Reveal
+        gsap.utils.toArray('.trigger-text').forEach(text => {
+            gsap.from(text, {
+                scrollTrigger: {
+                    trigger: text,
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out"
+            });
+        });
+
+        // Menu Stagger
+        gsap.utils.toArray('.menu-category').forEach(category => {
+            gsap.from(category.children, {
+                scrollTrigger: {
+                    trigger: category,
+                    start: "top 85%"
+                },
+                y: 30,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: "power2.out"
+            });
+        });
+
+        // Parallax Interlude
+        gsap.to(".parallax-img", {
+            scrollTrigger: {
+                trigger: ".parallax-img",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            },
+            scale: 1.2,
+            y: 50
+        });
+
+    </script>
+
+<script>
+  let inspectorMode = false;
+  let hoveredElement = null;
+  let selectedElement = null;
+  
+  window.addEventListener('message', (event) => {
+    if (event.data?.type === 'SET_INSPECTOR_MODE') {
+      inspectorMode = event.data.enabled;
+      document.body.style.cursor = inspectorMode ? 'crosshair' : 'default';
+    }
+    
+    if (event.data?.type === 'LOCAL_UPDATE' && selectedElement) {
+      const update = event.data.update;
+      
+      if (update.text !== undefined) {
+        selectedElement.innerText = update.text;
+      }
+      
+      if (update.styles) {
+        Object.entries(update.styles).forEach(([prop, value]) => {
+          selectedElement.style[prop] = value;
+        });
+      }
+    }
+  });
+  
+  document.addEventListener('mouseover', (e) => {
+    if (!inspectorMode) return;
+    if (hoveredElement && hoveredElement !== selectedElement) {
+      hoveredElement.style.outline = '';
+    }
+    hoveredElement = e.target;
+    if (hoveredElement !== selectedElement) {
+      hoveredElement.style.outline = '2px solid #06b6d4';
+    }
+  });
+  
+  document.addEventListener('mouseout', (e) => {
+    if (!inspectorMode || !hoveredElement) return;
+    if (hoveredElement !== selectedElement) {
+      hoveredElement.style.outline = '';
+    }
+  });
+  
+  document.addEventListener('click', (e) => {
+    if (!inspectorMode) return;
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (selectedElement) {
+      selectedElement.style.outline = '';
+    }
+    
+    const el = e.target;
+    selectedElement = el;
+    el.style.outline = '3px solid #06b6d4';
+    
+    const rect = el.getBoundingClientRect();
+    const styles = window.getComputedStyle(el);
+    
+    window.parent.postMessage({
+      type: 'ELEMENT_SELECTED',
+      element: {
+        tagName: el.tagName.toLowerCase(),
+        text: el.innerText?.substring(0, 500) || '',
+        className: el.className || '',
+        styles: {
+          color: styles.color,
+          backgroundColor: styles.backgroundColor,
+          fontSize: styles.fontSize,
+          fontWeight: styles.fontWeight,
+          padding: styles.padding,
+          margin: styles.margin,
+        },
+        rect: {
+          top: rect.top,
+          left: rect.left,
+          width: rect.width,
+          height: rect.height,
+        },
+        selector: el.id ? '#' + el.id : (el.className ? '.' + el.className.split(' ')[0] : el.tagName.toLowerCase())
+      }
+    }, '*');
+  }, true);
+</script>
+</body>
+</html>
